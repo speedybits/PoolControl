@@ -153,12 +153,12 @@ void loop() {
     robotStarted=true;
     // start robot after 5 minutes
     Serial.println("Waiting 5min to start robot");
-    delay(minute5);
-    //                        delay(minute1);
+    //delay(minute5);
+                            delay(minute1);
     press_cleaner_ON();
-    delay(minute30);
-    delay(minute30);
-    //                       delay(minute1);
+    //delay(minute30);
+    //delay(minute30);
+                           delay(minute1);
     press_cleaner_OFF();
   }
   else if (filterOn==false){
