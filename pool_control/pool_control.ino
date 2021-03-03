@@ -53,53 +53,42 @@ void setup() {
   pool_warmer_than_air = false;
   robotStarted = false;
 
-  minLight = 500;
-  maxLight = 400;
+/*
+  Serial.println("------");
+  lightLevel=analogRead(A0); //(photoRPin);
+  Serial.println(minLight);
+  Serial.println(lightLevel);
+  Serial.println(maxLight);
+*/
 
-
-  //Serial.println("1min test start");
-  //delay(minute1);
-  //Serial.println("1min test end");
-
-  filterOnServo.write(0);
-  filterOffServo.write(0);
-  robotOnServo.write(0);
-  robotOffServo.write(0);
+  filterOnServo.write(10);
+  filterOffServo.write(90);
+  robotOnServo.write(90);
+  robotOffServo.write(10);
+  
+  delay(second5);
   
   press_cleaner_OFF();
+  delay(second5);
   press_filter_OFF();
+
+  delay(second5);
   
   Serial.println("Initialization Done");
+  
 }
 
 void loop() {
   // =====================
   // DETERMINE DAY OR NIGHT
   // =====================
-   //auto-adjust the minimum and maximum limits in real time
+  
   lightLevel=analogRead(A0); //(photoRPin);
-  if(lightLevel<minLight){
-    minLight=lightLevel;
-  }
-  if(lightLevel>maxLight){
-    maxLight=lightLevel;
-  }
-    
-  //Adjust the light level to produce a result between 0 and 100.
-  adjustedLightLevel = map(lightLevel, minLight, maxLight, 0, 100);
-
-/*
-  Serial.println("------");
-  Serial.println(minLight);
-  Serial.println(lightLevel);
-  Serial.println(maxLight);
-*/
-  Serial.println(adjustedLightLevel);
  
-  if (adjustedLightLevel < 50){
+  if (lightLevel < 400){
     daytime=true;
     Serial.println("Day");
-  } else{
+  } else if (lightLevel > 600) {
     daytime=false;
     Serial.println("Night");
   }
@@ -147,6 +136,7 @@ void loop() {
     // Press Filter OFF
     // Turn AUX OFF
     filterOn=false;
+    press_cleaner_OFF(); // Make sure cleaner is OFF first
     press_filter_OFF();
   }
   // ===============================
@@ -159,10 +149,12 @@ void loop() {
     robotStarted=true;
     // start robot after 5 minutes
     Serial.println("Waiting 5min to start robot");
-    delay(minute5);
+    //delay(minute5);
+                            delay(minute1);
     press_cleaner_ON();
-    // run robot for 30 minutes
-    delay(minute30);
+    //delay(minute30);
+    //delay(minute30);
+                           delay(minute1);
     press_cleaner_OFF();
   }
   else if (filterOn==false){
@@ -172,57 +164,76 @@ void loop() {
   // ===============================
 
 
-  // 10 minute delay
-  delay(minute1);
+  // 30 minute delay
+  delay(minute30);
 }
 
 void press_filter_ON() {
   Serial.println("Filter ON");
-  for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 90 degrees
+  filterOnServo.write(90);
+  delay(second5);
+  filterOnServo.write(10);
+  /*
+  for (pos = 10; pos <= 30; pos += 1) { // goes from 0 degrees to 90 degrees
     // in steps of 1 degree
     filterOnServo.write(pos);              // tell servo to go to position in variable 'pos'
     delay(15);                       // waits 15ms for the servo to reach the position
   }
   delay(second5);
-  for (pos = 90; pos >= 0; pos -= 1) { // goes from 90 degrees to 0 degrees
+  for (pos = 90; pos >= 70; pos -= 1) { // goes from 90 degrees to 0 degrees
     filterOnServo.write(pos);              // tell servo to go to position in variable 'pos'
     delay(15);                       // waits 15ms for the servo to reach the position
   }
+  */
   digitalWrite(filterOnLed, HIGH);
 }
 
 void press_filter_OFF() {
   Serial.println("Filter OFF");
-  for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 180 degrees
+  filterOffServo.write(10);
+  delay(second5);
+  filterOffServo.write(90);
+  /*
+  for (pos = 10; pos <= 30; pos += 1) { // goes from 0 degrees to 180 degrees
     // in steps of 1 degree
     filterOffServo.write(pos);              // tell servo to go to position in variable 'pos'
     delay(15);                       // waits 15ms for the servo to reach the position
   }
   delay(second5);
-  for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+  for (pos = 90; pos >= 70; pos -= 1) { // goes from 180 degrees to 0 degrees
     filterOffServo.write(pos);              // tell servo to go to position in variable 'pos'
     delay(15);                       // waits 15ms for the servo to reach the position
   }
+  */
   digitalWrite(filterOnLed, LOW);
 }
 
 void press_cleaner_ON() {
   Serial.println("Cleaner ON");
-  for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 90 degrees
+  robotOnServo.write(10);
+  delay(second5);
+  robotOnServo.write(90);
+  /*
+  for (pos = 80; pos <= 90; pos += 1) { // goes from 0 degrees to 90 degrees
     // in steps of 1 degree
     robotOnServo.write(pos);              // tell servo to go to position in variable 'pos'
     delay(15);                       // waits 15ms for the servo to reach the position
   }
   delay(second5);
-  for (pos = 90; pos >= 0; pos -= 1) { // goes from 90 degrees to 0 degrees
+  for (pos = 90; pos >= 80; pos -= 1) { // goes from 90 degrees to 0 degrees
     robotOnServo.write(pos);              // tell servo to go to position in variable 'pos'
     delay(15);                       // waits 15ms for the servo to reach the position
   }
+  */
   digitalWrite(robotOnLed, HIGH);
 }
 
 void press_cleaner_OFF() {
   Serial.println("Cleaner OFF");
+  robotOffServo.write(90);
+  delay(second5);
+  robotOffServo.write(10);
+  /*
   for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 90 degrees
     // in steps of 1 degree
     robotOffServo.write(pos);              // tell servo to go to position in variable 'pos'
@@ -233,5 +244,6 @@ void press_cleaner_OFF() {
     robotOffServo.write(pos);              // tell servo to go to position in variable 'pos'
     delay(15);                       // waits 15ms for the servo to reach the position
   }
+  */
   digitalWrite(robotOnLed, LOW);
 }
