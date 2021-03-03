@@ -3,6 +3,9 @@
 */
 
 #include <Servo.h>
+#define MIN 5
+#define MAX 60
+#define WIGGLE 10
 
 // twelve servo objects can be created on most boards
 Servo filterOnServo;  // create servo object to control a servo
@@ -12,6 +15,7 @@ Servo robotOffServo;
 //Servo roofOnServo;
 //Servo roofOffServo;
 
+long second1 = 1000;
 long second5 = 5000;
 long minute1 = (second5 * 12); // 60,000
 long minute5 = (minute1 * 5);  // 300,000
@@ -61,10 +65,10 @@ void setup() {
   Serial.println(maxLight);
 */
 
-  filterOnServo.write(10);
-  filterOffServo.write(90);
-  robotOnServo.write(90);
-  robotOffServo.write(10);
+  filterOnServo.write(MIN);
+  filterOffServo.write(MIN);
+  robotOnServo.write(MIN);
+  robotOffServo.write(MIN);
   
   delay(second5);
   
@@ -170,80 +174,48 @@ void loop() {
 
 void press_filter_ON() {
   Serial.println("Filter ON");
-  filterOnServo.write(90);
-  delay(second5);
-  filterOnServo.write(10);
-  /*
-  for (pos = 10; pos <= 30; pos += 1) { // goes from 0 degrees to 90 degrees
-    // in steps of 1 degree
-    filterOnServo.write(pos);              // tell servo to go to position in variable 'pos'
-    delay(15);                       // waits 15ms for the servo to reach the position
-  }
-  delay(second5);
-  for (pos = 90; pos >= 70; pos -= 1) { // goes from 90 degrees to 0 degrees
-    filterOnServo.write(pos);              // tell servo to go to position in variable 'pos'
-    delay(15);                       // waits 15ms for the servo to reach the position
-  }
-  */
+  filterOnServo.write(MAX);
+  delay(second1);
+  filterOnServo.write(MAX+WIGGLE);
+  delay(second1);
+  filterOnServo.write(MAX-WIGGLE-WIGGLE);
+  delay(second1);
+  filterOnServo.write(MIN);
   digitalWrite(filterOnLed, HIGH);
 }
 
 void press_filter_OFF() {
   Serial.println("Filter OFF");
-  filterOffServo.write(10);
-  delay(second5);
-  filterOffServo.write(90);
-  /*
-  for (pos = 10; pos <= 30; pos += 1) { // goes from 0 degrees to 180 degrees
-    // in steps of 1 degree
-    filterOffServo.write(pos);              // tell servo to go to position in variable 'pos'
-    delay(15);                       // waits 15ms for the servo to reach the position
-  }
-  delay(second5);
-  for (pos = 90; pos >= 70; pos -= 1) { // goes from 180 degrees to 0 degrees
-    filterOffServo.write(pos);              // tell servo to go to position in variable 'pos'
-    delay(15);                       // waits 15ms for the servo to reach the position
-  }
-  */
+  filterOffServo.write(MAX);
+  delay(second1);
+  filterOffServo.write(MAX+WIGGLE);
+  delay(second1);
+  filterOffServo.write(MAX-WIGGLE-WIGGLE); 
+  delay(second1);
+  filterOffServo.write(MIN);
   digitalWrite(filterOnLed, LOW);
 }
 
 void press_cleaner_ON() {
   Serial.println("Cleaner ON");
-  robotOnServo.write(10);
-  delay(second5);
-  robotOnServo.write(90);
-  /*
-  for (pos = 80; pos <= 90; pos += 1) { // goes from 0 degrees to 90 degrees
-    // in steps of 1 degree
-    robotOnServo.write(pos);              // tell servo to go to position in variable 'pos'
-    delay(15);                       // waits 15ms for the servo to reach the position
-  }
-  delay(second5);
-  for (pos = 90; pos >= 80; pos -= 1) { // goes from 90 degrees to 0 degrees
-    robotOnServo.write(pos);              // tell servo to go to position in variable 'pos'
-    delay(15);                       // waits 15ms for the servo to reach the position
-  }
-  */
+  robotOnServo.write(MAX);
+  delay(second1);
+  robotOnServo.write(MAX+WIGGLE);
+  delay(second1);  
+  robotOnServo.write(MAX-WIGGLE-WIGGLE);
+  delay(second1);
+  robotOnServo.write(MIN);
   digitalWrite(robotOnLed, HIGH);
 }
 
 void press_cleaner_OFF() {
   Serial.println("Cleaner OFF");
-  robotOffServo.write(90);
-  delay(second5);
-  robotOffServo.write(10);
-  /*
-  for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 90 degrees
-    // in steps of 1 degree
-    robotOffServo.write(pos);              // tell servo to go to position in variable 'pos'
-    delay(15);                       // waits 15ms for the servo to reach the position
-  }
-  delay(second5);
-  for (pos = 90; pos >= 0; pos -= 1) { // goes from 90 degrees to 0 degrees
-    robotOffServo.write(pos);              // tell servo to go to position in variable 'pos'
-    delay(15);                       // waits 15ms for the servo to reach the position
-  }
-  */
+  robotOffServo.write(MAX);
+  delay(second1); 
+  robotOffServo.write(MAX+WIGGLE);
+  delay(second1); 
+  robotOffServo.write(MAX-WIGGLE-WIGGLE);
+  delay(second1);
+  robotOffServo.write(MIN);
   digitalWrite(robotOnLed, LOW);
 }
