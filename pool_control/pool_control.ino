@@ -83,16 +83,29 @@ void setup() {
 }
 
 void loop() {
+
+/*
+  press_filter_OFF();
+  delay(second5);
+  press_filter_ON();
+  delay(second5);
+  press_cleaner_OFF();
+  delay(second5);
+  press_cleaner_ON();
+  delay(second5);
+  */
+
+
   // =====================
   // DETERMINE DAY OR NIGHT
   // =====================
-  
+
   lightLevel=analogRead(A0); //(photoRPin);
  
-  if (lightLevel < 400){
+  if (lightLevel < 300){
     daytime=true;
     Serial.println("Day");
-  } else if (lightLevel > 600) {
+  } else if (lightLevel > 500) {
     daytime=false;
     Serial.println("Night");
   }
@@ -170,6 +183,7 @@ void loop() {
 
   // 30 minute delay
   delay(minute30);
+  
 }
 
 void press_filter_ON() {
