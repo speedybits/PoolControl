@@ -154,6 +154,7 @@ void loop() {
     // Turn AUX OFF
     filterOn=false;
     press_cleaner_OFF(); // Make sure cleaner is OFF first
+    delay(second5);
     press_filter_OFF();
   }
   // ===============================
@@ -162,7 +163,7 @@ void loop() {
   // ===============================
   // TURN ON ROBOT ONCE PER DAY
   // ===============================
-  if (filterOn==true && robotStarted==false){
+  if (daytime==true && filterOn==true && robotStarted==false){
     robotStarted=true;
     // start robot after 5 minutes
     Serial.println("Waiting 5min to start robot");
@@ -174,15 +175,15 @@ void loop() {
     //                       delay(minute1);
     press_cleaner_OFF();
   }
-  else if (filterOn==false){
+  else if (daytime==false){
     // End of day...reset robot
     robotStarted=false;
   }
   // ===============================
 
 
-  // 30 minute delay
-  delay(minute30);
+  // 10 minute delay
+  delay(minute10);
   
 }
 
